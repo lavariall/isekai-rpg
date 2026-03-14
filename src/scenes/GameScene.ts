@@ -23,6 +23,9 @@ export class GameScene extends Phaser.Scene {
         this.load.image('hero_layer_4', 'assets/hero/Hero_04_Neck.png');
         this.load.image('hero_layer_5', 'assets/hero/Hero_05_Lower_Head.png');
         this.load.image('hero_layer_6', 'assets/hero/Hero_05_Upper_Head.png');
+        
+        // Load pre-processed high-quality slime texture
+        this.load.image('slime_layer_0', 'assets/slime/Slime_00.png');
     }
 
     create() {

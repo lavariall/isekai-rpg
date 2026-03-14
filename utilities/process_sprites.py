@@ -2,8 +2,8 @@ import os
 from rembg import remove
 from PIL import Image
 
-# Define target sizes for hero layers
-# Using consistent 64x64 for base layers and 112x112 for head layers for a stylized look
+# Define target sizes for various entities
+# Hero layers
 target_sizes = {
     "Hero_00_Boots.png": (64, 64),
     "Hero_01_Waist.png": (64, 64),
@@ -12,20 +12,32 @@ target_sizes = {
     "Hero_04_Neck.png": (64, 64),
     "Hero_05_Lower_Head.png": (112, 112),
     "Hero_05_Upper_Head.png": (112, 112),
+    "Sword.png": (64, 64),
+    "Slime_00.png": (48, 48), # Slime base layer
 }
 
-def process_sprites(input_folder, output_folder):
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder, exist_ok=True)
-
-    print(f"Starting sprite processing from {input_folder} to {output_folder}")
+def process_sprites(input_folder, base_output_folder):
+    print(f"Starting sprite processing from {input_folder}")
 
     for filename in os.listdir(input_folder):
         if filename.endswith(".png") or filename.endswith(".jpg"):
             if "concept_art" in filename:
                 continue
                 
-            print(f"Processing: {filename}...")
+            # Determine subfolder based on prefix
+            subfolder = "other"
+            if filename.startswith("Hero"):
+                subfolder = "hero"
+            elif filename.startswith("Slime"):
+                subfolder = "slime"
+            elif filename == "Sword.png":
+                subfolder = "hero"
+                
+            output_folder = os.path.join(base_output_folder, subfolder)
+            if not os.path.exists(output_folder):
+                os.makedirs(output_folder, exist_ok=True)
+                
+            print(f"Processing: {filename} -> {output_folder}...")
             
             # 1. Load image
             input_path = os.path.join(input_folder, filename)
@@ -51,6 +63,6 @@ def process_sprites(input_folder, output_folder):
 if __name__ == "__main__":
     # Adjust paths relative to project root
     input_dir = os.path.abspath(".concept")
-    output_dir = os.path.abspath("public/assets/hero")
+    output_base_dir = os.path.abspath("public/assets")
     
-    process_sprites(input_dir, output_dir)
+    process_sprites(input_dir, output_base_dir)
