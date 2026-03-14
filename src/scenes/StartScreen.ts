@@ -16,7 +16,7 @@ export class StartScreen extends Phaser.Scene {
      * Preloads the background image.
      */
     preload(): void {
-        this.load.image('start_bg', 'assets/backgrounds/Sword_HighRes.png');
+        this.load.image('start_bg', 'assets/backgrounds/Background_Start_Screen_concept_art.png');
     }
 
     /**
@@ -27,7 +27,7 @@ export class StartScreen extends Phaser.Scene {
 
         // 1. Background
         const bg = this.add.image(width / 2, height / 2, 'start_bg');
-        
+
         // Scale background to cover screen
         const scale = Math.max(width / bg.width, height / bg.height);
         bg.setScale(scale).setAlpha(0.6); // Slightly dimmed for readability

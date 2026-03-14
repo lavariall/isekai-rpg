@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { HeroStats } from './hero/HeroStats';
+
 
 /**
  * Represents a sword weapon that can be swung by the hero.
@@ -10,8 +12,19 @@ export class Sword extends Phaser.GameObjects.Sprite {
     private heroX: number = 0;
     private heroY: number = 0;
     private baseAngle: number = 0;
-    private readonly SWING_DURATION: number = 300; // ms
-    private readonly SWING_RADIUS: number = 100; // degrees
+    private readonly CENTER_OFFSET_X: number = -4; // Subtle centering
+    private readonly CENTER_OFFSET_Y: number = -4; // Subtle centering
+    private readonly SWING_DURATION: number = 200; // Faster whirlwind
+    private readonly SWING_RADIUS: number = 360; // WHIRLWIND!
+    public hitEnemies: Set<Phaser.GameObjects.GameObject> = new Set();
+
+    // Sword Stats & Requirements
+    public damage: number = 5;
+    public required_strength: number = 10;
+    public magic_damage: number = 0;
+    public required_magic_power: number = 10;
+    public required_agility: number = 10;
+
 
     /**
      * Creates an instance of the Sword.
@@ -22,21 +35,18 @@ export class Sword extends Phaser.GameObjects.Sprite {
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, 'sword');
         scene.add.existing(this);
-        scene.physics.add.existing(this);
 
         this.setAlpha(0); // Hidden by default
-        this.setScale(1.5); // 50% bigger
-        this.setOrigin(1, 0.5); // Pivot at the handle (right side of asset)
+        this.setScale(1.5);
+        this.setOrigin(1, 0.5); // Handle pivot for the whirlwind
 
-        const body = this.body as Phaser.Physics.Arcade.Body;
-        body.setAllowGravity(false);
-        body.setImmovable(true);
-        // Hitbox should be the size of the blade, scaled
-        body.setSize(48, 15); 
+        // Register for preUpdate so swing math actually runs
+        scene.sys.updateList.add(this);
     }
 
+
     /**
-     * Initiates a sword swing animation.
+     * Initiates a whirlwind animation.
      * @param {number} baseAngle The angle (in degrees) from which the swing starts.
      */
     public swing(baseAngle: number) {
@@ -47,6 +57,7 @@ export class Sword extends Phaser.GameObjects.Sprite {
         this.setAlpha(1);
         this.baseAngle = baseAngle;
     }
+
 
     /**
      * Internal Phaser update loop for the sword.
@@ -59,10 +70,10 @@ export class Sword extends Phaser.GameObjects.Sprite {
 
             const t = Math.min(this.swingProgress / this.SWING_DURATION, 1);
 
-            // Sweep from -50 to +50 degrees around the baseAngle
-            const currentTheta = this.baseAngle - (this.SWING_RADIUS / 2) + (t * this.SWING_RADIUS);
+            // 360-degree sweep starting from the current orientation
+            const currentTheta = this.baseAngle + (t * this.SWING_RADIUS);
 
-            const distance = 24; // Swing out a bit further for visual impact
+            const distance = 40; // Closer for whirlwind effect
             const rad = Phaser.Math.DegToRad(currentTheta);
 
             this.setPosition(
@@ -70,8 +81,10 @@ export class Sword extends Phaser.GameObjects.Sprite {
                 this.heroY + Math.sin(rad) * distance
             );
 
-            // Asset points LEFT at angle 0. 
-            // To point in direction currentTheta (away from hero), add 180.
+            // Asset points AWAY from handle at angle 180 (if origin is handle)
+            // Wait, asset points LEFT at 0. If origin is 1, handle is on the right?
+            // Let's keep it simple: origin 1,0.5 means pivot is handle.
+            // If asset points left and we want it to point Away from hero, we add 180.
             this.angle = currentTheta + 180;
 
             if (t >= 1) {
@@ -96,21 +109,46 @@ export class Sword extends Phaser.GameObjects.Sprite {
      * @param {number} offsetAngle The current angle of the hero's graphics.
      */
     public updatePosition(x: number, y: number, offsetAngle: number) {
-        this.heroX = x;
-        this.heroY = y;
+        this.heroX = x + this.CENTER_OFFSET_X;
+        this.heroY = y + this.CENTER_OFFSET_Y;
 
         if (!this.swinging) {
+            // WHIRLWIND: Purely visual update for position
             this.baseAngle = offsetAngle;
-            const distance = 16;
+            const distance = 40; 
             const rad = Phaser.Math.DegToRad(offsetAngle);
             this.setPosition(
-                x + Math.cos(rad) * distance,
-                y + Math.sin(rad) * distance
+                this.heroX + Math.cos(rad) * distance,
+                this.heroY + Math.sin(rad) * distance
             );
 
-            // Default orientation points away from hero
             this.angle = offsetAngle + 180;
         }
+    }
+
+    /**
+     * Calculates the damage output based on the hero's stats.
+     * Formula: (HeroStrength / ReqStrength) * HeroStrength * SwordDamage + ...
+     * @param {HeroStats} stats The hero's statistics.
+     * @returns {number} The calculated damage.
+     */
+    public calculateDamage(stats: HeroStats): number {
+        let physicalDamage = 0;
+        if (this.required_strength > 0) {
+            physicalDamage = (stats.strength / this.required_strength) * stats.strength * this.damage;
+        }
+
+        let magicDamage = 0;
+        if (this.required_magic_power > 0) {
+            magicDamage = (stats.magicPower / this.required_magic_power) * stats.magicPower * this.magic_damage;
+        }
+
+        let agilityDamage = 0;
+        if (this.required_agility > 0) {
+            agilityDamage = (stats.agility / this.required_agility) * stats.agility * this.damage;
+        }
+
+        return physicalDamage + magicDamage + agilityDamage;
     }
 }
 
