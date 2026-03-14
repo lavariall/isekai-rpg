@@ -1,11 +1,18 @@
 import Phaser from 'phaser';
 import { SpriteStack } from '../SpriteStack';
 
+/**
+ * Handles the visual representation of the hero, including animations and tilting.
+ */
 export class HeroGraphics extends SpriteStack {
-    private swinging: boolean = false;
-    private swingAngle: number = 0;
-
+    /**
+     * Creates an instance of HeroGraphics.
+     * @param {Phaser.Scene} scene The Phaser scene this graphics object belongs to.
+     * @param {number} x The initial x-coordinate.
+     * @param {number} y The initial y-coordinate.
+     */
     constructor(scene: Phaser.Scene, x: number, y: number) {
+
         // We use the new concept texture prefix 'hero_layer'
         // There are 7 layers total
         super(scene, x, y, 'hero_layer', 7);
@@ -20,41 +27,22 @@ export class HeroGraphics extends SpriteStack {
         this.spacing = 1.0; 
     }
 
+    /**
+     * Internal Phaser update loop for the hero graphics.
+     * @param {number} time The current time.
+     * @param {number} delta The delta time since the last frame.
+     */
     preUpdate(time: number, delta: number) {
         super.preUpdate(time, delta);
-
-        if (this.swinging) {
-            this.swingAngle += delta * 1.5;
-            if (this.swingAngle >= 180) {
-                this.swingAngle = 0;
-                this.swinging = false;
-                // Reset rotations for upper body layers
-                // Assuming layers 4, 5, 6 are neck and head parts
-                // In the old system it was 4, 5, 6 (sword + head?)
-                // We'll see how it looks with the new layers
-                this.setLayerRotation(4, 0);
-                this.setLayerRotation(5, 0);
-                this.setLayerRotation(6, 0);
-            } else {
-                const rot = Math.sin(Phaser.Math.DegToRad(this.swingAngle)) * 90;
-                this.setLayerRotation(4, rot);
-                this.setLayerRotation(5, rot);
-                this.setLayerRotation(6, rot);
-            }
-        }
     }
 
-    public startSwing() {
-        if (this.swinging) return;
-        this.swinging = true;
-        this.swingAngle = 0;
-    }
-
-    public isSwinging() {
-        return this.swinging;
-    }
-
+    /**
+     * Updates the hero's visual tilt and rotation based on movement.
+     * @param {number} vx The horizontal velocity or movement direction.
+     * @param {number} vy The vertical velocity or movement direction.
+     */
     public updateMovement(vx: number, vy: number) {
+
         // Tilting effect
         this.setTilt(vx * 3, vy * 3);
 

@@ -1,3 +1,7 @@
+/**
+ * Manages the statistics and progression of the hero character.
+ * Tracks health, mana, level, experience, and primary attributes.
+ */
 export class HeroStats {
     public health: number;
     public maxHealth: number;
@@ -10,6 +14,9 @@ export class HeroStats {
     public xp: number;
     public nextLevelXp: number;
 
+    /**
+     * Creates an instance of HeroStats with default starting values.
+     */
     constructor() {
         this.level = 1;
         this.maxHealth = 100;
@@ -23,14 +30,26 @@ export class HeroStats {
         this.nextLevelXp = 100;
     }
 
+    /**
+     * Reduces the hero's health by the specified amount.
+     * @param {number} amount The amount of damage to take.
+     */
     public takeDamage(amount: number) {
         this.health = Math.max(0, this.health - amount);
     }
 
+    /**
+     * Increases the hero's health by the specified amount, up to max health.
+     * @param {number} amount The amount of health to restore.
+     */
     public heal(amount: number) {
         this.health = Math.min(this.maxHealth, this.health + amount);
     }
 
+    /**
+     * Adds experience points to the hero and triggers a level up if the threshold is reached.
+     * @param {number} amount The amount of experience to add.
+     */
     public addXp(amount: number) {
         this.xp += amount;
         if (this.xp >= this.nextLevelXp) {

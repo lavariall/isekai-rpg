@@ -1,5 +1,9 @@
 import Phaser from 'phaser';
 
+/**
+ * Handles keyboard input for the hero character.
+ * Translates WASD and Arrow key presses into movement vectors and actions.
+ */
 export class HeroController {
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private wasd: { [key: string]: Phaser.Input.Keyboard.Key };
@@ -8,6 +12,10 @@ export class HeroController {
     public movementVector: Phaser.Math.Vector2 = new Phaser.Math.Vector2(0, 0);
     public wantToSwing: boolean = false;
 
+    /**
+     * Creates an instance of the HeroController.
+     * @param {Phaser.Scene} scene The Phaser scene providing input.
+     */
     constructor(scene: Phaser.Scene) {
         this.cursors = scene.input.keyboard!.createCursorKeys();
         this.wasd = scene.input.keyboard!.addKeys('W,A,S,D') as any;
@@ -17,6 +25,10 @@ export class HeroController {
         });
     }
 
+    /**
+     * Updates the movement vector based on currently pressed keys.
+     * Should be called every frame.
+     */
     public update() {
         let vx = 0;
         let vy = 0;
@@ -30,12 +42,20 @@ export class HeroController {
         this.movementVector.set(vx, vy).normalize().scale(this.speed);
     }
 
+    /**
+     * Consumes the swing intent, resetting the flag.
+     * @returns {boolean} True if the player wants to swing, false otherwise.
+     */
     public consumeSwing(): boolean {
         const swinging = this.wantToSwing;
         this.wantToSwing = false;
         return swinging;
     }
 
+    /**
+     * Gets the raw x and y input values (-1, 0, or 1).
+     * @returns {{ x: number, y: number }} An object containing the current x and y input state.
+     */
     public getRawInput(): { x: number, y: number } {
         let x = 0;
         let y = 0;

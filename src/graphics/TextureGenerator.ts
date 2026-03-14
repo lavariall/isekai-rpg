@@ -1,6 +1,13 @@
 import Phaser from 'phaser';
 
+/**
+ * Utility class for generating procedural textures using Canvas.
+ */
 export class TextureGenerator {
+    /**
+     * Generates a series of canvas-based textures for the hero character.
+     * @param {Phaser.Scene} scene The Phaser scene to add the textures to.
+     */
     static generateHeroTextures(scene: Phaser.Scene) {
         const layers = 12;
         const size = 32;
@@ -46,6 +53,10 @@ export class TextureGenerator {
         }
     }
 
+    /**
+     * Generates a series of canvas-based textures for the slime enemy.
+     * @param {Phaser.Scene} scene The Phaser scene to add the textures to.
+     */
     static generateSlimeTextures(scene: Phaser.Scene) {
         const layers = 10;
         const size = 32;
@@ -68,6 +79,10 @@ export class TextureGenerator {
         }
     }
 
+    /**
+     * Generates textures for environment obstacles like rocks and bushes.
+     * @param {Phaser.Scene} scene The Phaser scene to add the textures to.
+     */
     static generateObstacleTextures(scene: Phaser.Scene) {
         const layers = 12;
         const size = 32;
@@ -107,6 +122,10 @@ export class TextureGenerator {
         }
     }
 
+    /**
+     * Generates a single-pixel or small square texture for XP particles.
+     * @param {Phaser.Scene} scene The Phaser scene to add the texture to.
+     */
     static generateXPTexture(scene: Phaser.Scene) {
         const canvas = document.createElement('canvas');
         canvas.width = 8;
