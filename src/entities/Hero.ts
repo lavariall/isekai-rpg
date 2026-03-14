@@ -2,8 +2,8 @@ import Phaser from 'phaser';
 import { HeroStats } from './hero/HeroStats';
 import { HeroGraphics } from './hero/HeroGraphics';
 import { HeroController } from './hero/HeroController';
+import { HeroMeleWeaponCollider } from './hero/HeroMeleWeaponCollider';
 import { Sword } from './Sword';
-
 
 /**
  * The main hero character of the game.
@@ -14,6 +14,7 @@ export class Hero extends Phaser.GameObjects.Container {
     public graphics: HeroGraphics;
     public controller: HeroController;
     public sword: Sword;
+    public meleeCollider: HeroMeleWeaponCollider;
     private bodyProxy: Phaser.Physics.Arcade.Body;
 
 
@@ -32,15 +33,18 @@ export class Hero extends Phaser.GameObjects.Container {
         this.graphics = new HeroGraphics(scene, 0, 0);
         this.controller = new HeroController(scene);
         this.sword = new Sword(scene, x, y);
+        
+        // Whirlwind area collider (radius 140 approx distance+blade)
+        this.meleeCollider = new HeroMeleWeaponCollider(scene, x, y, 140);
 
 
         // 2. Setup Graphics as a child
         this.add(this.graphics);
 
-        // 3. Setup Physics
         scene.physics.add.existing(this);
         this.bodyProxy = this.body as Phaser.Physics.Arcade.Body;
-        this.bodyProxy.setCircle(12, -12, -12);
+        // 16 radius circle centered at (0,0) in Container space
+        this.bodyProxy.setCircle(16, -16, -16);
     }
 
     /**
@@ -62,10 +66,12 @@ export class Hero extends Phaser.GameObjects.Container {
         // Handle actions
         if (this.controller.consumeSwing()) {
             this.sword.swing(this.graphics.angle);
+            this.meleeCollider.activate();
         }
 
-        // Update sword position
+        // Update components
         this.sword.updatePosition(this.x, this.y, this.graphics.angle);
+        this.meleeCollider.updatePosition(this.x, this.y);
     }
 
     /**

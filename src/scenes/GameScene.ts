@@ -49,6 +49,8 @@ export class GameScene extends Phaser.Scene {
         TextureGenerator.generateSlimeTextures(this);
         TextureGenerator.generateObstacleTextures(this);
         TextureGenerator.generateXPTexture(this);
+        TextureGenerator.generateWindTexture(this);
+        TextureGenerator.generateSilverTexture(this);
 
         // 2. Set world bounds and background
         const worldSize = 2000;
@@ -98,10 +100,20 @@ export class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.enemies, this.obstacles);
         this.physics.add.collider(this.enemies, this.enemies);
 
-        // Combat Overlap (Sword swing)
-        this.physics.add.overlap(this.player.sword, this.enemies, (_s, e) => {
-            if (this.player.isSwinging()) {
-                this.defeatEnemy(e as Slime);
+        // Combat Overlap (Whirlwind AoE)
+        this.physics.add.overlap(this.player.meleeCollider, this.enemies, (_s, e) => {
+            const collider = this.player.meleeCollider;
+            const slime = e as Slime;
+            const sword = this.player.sword;
+            
+            if (collider.isColliderActive() && !collider.getHitEnemies().has(slime)) {
+                const damage = sword.calculateDamage(this.player.stats);
+                slime.takeDamage(damage);
+                collider.markEnemyAsHit(slime);
+
+                if (slime.health <= 0) {
+                    this.defeatEnemy(slime);
+                }
             }
         });
 

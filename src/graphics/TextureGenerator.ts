@@ -135,4 +135,52 @@ export class TextureGenerator {
         ctx.fillRect(2, 2, 4, 4);
         scene.textures.addCanvas('xp_particle', canvas);
     }
+
+    /**
+     * Generates a "Wind Slash" texture for whirlwind particles.
+     * @param {Phaser.Scene} scene The Phaser scene to add the texture to.
+     */
+    static generateWindTexture(scene: Phaser.Scene) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 16;
+        canvas.height = 16;
+        const ctx = canvas.getContext('2d')!;
+
+        // Draw a glowing, fading streak
+        const gradient = ctx.createRadialGradient(8, 8, 2, 8, 8, 8);
+        gradient.addColorStop(0, 'rgba(255, 255, 255, 0.8)'); // Inner white
+        gradient.addColorStop(0.5, 'rgba(52, 152, 219, 0.5)'); // Middle cyan
+        gradient.addColorStop(1, 'rgba(52, 152, 219, 0)'); // Outer transparent
+
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(8, 8, 8, 0, Math.PI * 2);
+        ctx.fill();
+
+        scene.textures.addCanvas('wind_particle', canvas);
+    }
+
+    /**
+     * Generates a "Silver Slash" texture for whirlwind particles.
+     * @param {Phaser.Scene} scene The Phaser scene to add the texture to.
+     */
+    static generateSilverTexture(scene: Phaser.Scene) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 16;
+        canvas.height = 16;
+        const ctx = canvas.getContext('2d')!;
+
+        // Draw a metallic, silver glowing streak
+        const gradient = ctx.createRadialGradient(8, 8, 2, 8, 8, 8);
+        gradient.addColorStop(0, 'rgba(236, 240, 241, 0.9)'); // Silver white
+        gradient.addColorStop(0.5, 'rgba(189, 195, 199, 0.6)'); // Silver gray
+        gradient.addColorStop(1, 'rgba(189, 195, 199, 0)'); // Transparent
+
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(8, 8, 8, 0, Math.PI * 2);
+        ctx.fill();
+
+        scene.textures.addCanvas('silver_particle', canvas);
+    }
 }

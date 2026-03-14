@@ -6,6 +6,7 @@ import { SpriteStack } from './SpriteStack';
  * Inherits from SpriteStack for a pseudo-3D effect.
  */
 export class Slime extends SpriteStack {
+    public health: number = 100;
     private bodyProxy: Phaser.Physics.Arcade.Body;
     private target: Phaser.GameObjects.Components.Transform | null = null;
     private speed: number = 50;
@@ -23,11 +24,19 @@ export class Slime extends SpriteStack {
         
         scene.physics.add.existing(this);
         this.bodyProxy = this.body as Phaser.Physics.Arcade.Body;
-        this.bodyProxy.setCircle(12, -12, -12); // Slightly larger for the new asset
+        this.bodyProxy.setCircle(16, -16, -16);
         this.spacing = 1.0;
         
         // Final scale for the pre-processed 48x48 asset
         this.layers.forEach(layer => layer.setScale(1.0));
+    }
+
+    /**
+     * Reduces the slime's health by the specified amount.
+     * @param {number} amount The amount of damage to take.
+     */
+    public takeDamage(amount: number) {
+        this.health = Math.max(0, this.health - amount);
     }
 
     /**
