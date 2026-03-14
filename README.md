@@ -55,3 +55,4 @@
 
 ---
 *Created as part of an Isekai Game Development project.*
+*Thanks to Google Antigravity and Gemini 3 Flash for the help.*
