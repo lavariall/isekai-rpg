@@ -49,3 +49,5 @@
 
 ---
 *Created as part of an Isekai Game Development project.*
+
+**Play Slime Hunter live at: [https://lavariall.github.io/isekai-rpg/](https://lavariall.github.io/isekai-rpg/)**
