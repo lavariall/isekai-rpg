@@ -73,14 +73,14 @@ export class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.enemies, this.enemies);
 
         // Combat Overlap (Sword swing)
-        this.physics.add.overlap(this.player, this.enemies, (p, e) => {
+        this.physics.add.overlap(this.player, this.enemies, (_p, e) => {
             if (this.player.isSwinging()) {
                 this.defeatEnemy(e as Slime);
             }
         });
     }
 
-    spawnSlime() {
+    spawnSlime(): void {
         const x = Phaser.Math.Between(100, 1900);
         const y = Phaser.Math.Between(100, 1900);
         // Distant from player

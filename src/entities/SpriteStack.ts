@@ -20,7 +20,7 @@ export class SpriteStack extends Phaser.GameObjects.Container {
         }
     }
 
-    preUpdate(time: number, delta: number) {
+    preUpdate(_time: number, _delta: number) {
         this.layers.forEach((layer, i) => {
             // Pseudo-3D stacking effect
             layer.setY(-i * this.spacing);
