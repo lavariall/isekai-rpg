@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { HeroStats } from './hero/HeroStats';
-
+import { WhirlwindParticle } from './WhirlwindParticle';
 
 /**
  * Represents a sword weapon that can be swung by the hero.
@@ -12,6 +12,8 @@ export class Sword extends Phaser.GameObjects.Sprite {
     private heroX: number = 0;
     private heroY: number = 0;
     private baseAngle: number = 0;
+    private lastParticleTime: number = 0;
+    private readonly PARTICLE_INTERVAL: number = 16; // Spawn every ~frame during swing
     private readonly CENTER_OFFSET_X: number = -4; // Subtle centering
     private readonly CENTER_OFFSET_Y: number = -4; // Subtle centering
     private readonly SWING_DURATION: number = 200; // Faster whirlwind
@@ -64,7 +66,7 @@ export class Sword extends Phaser.GameObjects.Sprite {
      * @param {number} _time The current time.
      * @param {number} delta The delta time since the last frame.
      */
-    preUpdate(_time: number, delta: number) {
+    preUpdate(time: number, delta: number) {
         if (this.swinging) {
             this.swingProgress += delta;
 
@@ -81,11 +83,32 @@ export class Sword extends Phaser.GameObjects.Sprite {
                 this.heroY + Math.sin(rad) * distance
             );
 
-            // Asset points AWAY from handle at angle 180 (if origin is handle)
-            // Wait, asset points LEFT at 0. If origin is 1, handle is on the right?
-            // Let's keep it simple: origin 1,0.5 means pivot is handle.
-            // If asset points left and we want it to point Away from hero, we add 180.
             this.angle = currentTheta + 180;
+
+            // --- PARTICLE EMISSION ---
+            if (time > this.lastParticleTime + this.PARTICLE_INTERVAL) {
+                // Layer 1: Cyan Wind Slash at blade tip
+                const cyanDist = distance + 30;
+                new WhirlwindParticle(
+                    this.scene,
+                    this.heroX + Math.cos(rad) * cyanDist,
+                    this.heroY + Math.sin(rad) * cyanDist,
+                    this.angle,
+                    'wind_particle'
+                );
+
+                // Layer 2: Silver Tail Swipe at outer hitbox edge (radius 140)
+                const silverDist = 140;
+                new WhirlwindParticle(
+                    this.scene,
+                    this.heroX + Math.cos(rad) * silverDist,
+                    this.heroY + Math.sin(rad) * silverDist,
+                    this.angle,
+                    'silver_particle'
+                );
+
+                this.lastParticleTime = time;
+            }
 
             if (t >= 1) {
                 this.swinging = false;

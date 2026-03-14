@@ -49,6 +49,8 @@ export class GameScene extends Phaser.Scene {
         TextureGenerator.generateSlimeTextures(this);
         TextureGenerator.generateObstacleTextures(this);
         TextureGenerator.generateXPTexture(this);
+        TextureGenerator.generateWindTexture(this);
+        TextureGenerator.generateSilverTexture(this);
 
         // 2. Set world bounds and background
         const worldSize = 2000;
