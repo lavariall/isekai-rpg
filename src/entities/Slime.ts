@@ -33,11 +33,19 @@ export class Slime extends SpriteStack {
                 Math.cos(angle) * this.speed,
                 Math.sin(angle) * this.speed
             );
-            this.angle = Phaser.Math.RadToDeg(angle);
         }
 
-        // Pulsating effect
-        const pulse = 1.0 + Math.sin(time / 200) * 0.2;
-        this.spacing = pulse;
+        // Pulsating/Squeeze effect (Wobble)
+        const timeScale = time / 150;
+        const wobble = Math.sin(timeScale) * 0.1;
+        const scaleX = 1.0 + wobble;
+        const scaleY = 1.0 - wobble;
+        
+        this.layers.forEach(layer => {
+            layer.setScale(scaleX, scaleY);
+        });
+
+        // Vertical spacing pulse
+        this.spacing = 1.0 + Math.sin(time / 200) * 0.2;
     }
 }
