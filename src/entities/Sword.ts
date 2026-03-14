@@ -23,15 +23,16 @@ export class Sword extends Phaser.GameObjects.Sprite {
         super(scene, x, y, 'sword');
         scene.add.existing(this);
         scene.physics.add.existing(this);
-        
+
         this.setAlpha(0); // Hidden by default
-        this.setOrigin(0.5, 1); // Pivot at the bottom (grip)
-        
+        this.setScale(1.5); // 50% bigger
+        this.setOrigin(1, 0.5); // Pivot at the handle (right side of asset)
+
         const body = this.body as Phaser.Physics.Arcade.Body;
         body.setAllowGravity(false);
         body.setImmovable(true);
-        // Hitbox should be the size of the blade
-        body.setSize(10, 32); 
+        // Hitbox should be the size of the blade, scaled
+        body.setSize(48, 15); 
     }
 
     /**
@@ -55,26 +56,23 @@ export class Sword extends Phaser.GameObjects.Sprite {
     preUpdate(_time: number, delta: number) {
         if (this.swinging) {
             this.swingProgress += delta;
-            
+
             const t = Math.min(this.swingProgress / this.SWING_DURATION, 1);
-            
+
             // Sweep from -50 to +50 degrees around the baseAngle
             const currentTheta = this.baseAngle - (this.SWING_RADIUS / 2) + (t * this.SWING_RADIUS);
-            
+
             const distance = 24; // Swing out a bit further for visual impact
             const rad = Phaser.Math.DegToRad(currentTheta);
-            
+
             this.setPosition(
                 this.heroX + Math.cos(rad) * distance,
                 this.heroY + Math.sin(rad) * distance
             );
-            
-            // Points away from the hero (0 is right, sprite points towards its top/blade)
-            // If the sprite's blade is pointing "up" in the image, angle 0 should point right.
-            // Phaser's angle 0 is right. If asset points up, we might need an offset,
-            // but the user says it was tangential and now wants it radial.
-            // If it was tangential with +90, it should be radial with +0 or +180.
-            this.angle = currentTheta + 90; 
+
+            // Asset points LEFT at angle 0. 
+            // To point in direction currentTheta (away from hero), add 180.
+            this.angle = currentTheta + 180;
 
             if (t >= 1) {
                 this.swinging = false;
@@ -109,10 +107,11 @@ export class Sword extends Phaser.GameObjects.Sprite {
                 x + Math.cos(rad) * distance,
                 y + Math.sin(rad) * distance
             );
-            
+
             // Default orientation points away from hero
-            this.angle = offsetAngle + 90;
+            this.angle = offsetAngle + 180;
         }
     }
 }
+
 
