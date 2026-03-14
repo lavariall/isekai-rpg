@@ -34,10 +34,13 @@ export class GameScene extends Phaser.Scene {
         this.load.image('hero_layer_5', 'assets/hero/Hero_05_Lower_Head.png');
         this.load.image('hero_layer_6', 'assets/hero/Hero_05_Upper_Head.png');
         this.load.image('sword', 'assets/hero/Sword.png');
-        
-        // Load pre-processed high-quality slime texture
 
         this.load.image('slime_layer_0', 'assets/slime/Slime_00.png');
+
+        // Load new Rock assets
+        this.load.image('rock_v0_0', 'assets/world/Rock_00.png');
+        this.load.image('rock_v1_0', 'assets/world/Rock_01.png');
+        this.load.image('rock_v2_0', 'assets/world/Rock_02.png');
     }
 
     /**
@@ -45,7 +48,7 @@ export class GameScene extends Phaser.Scene {
      */
     create() {
         // 1. Generate procedural textures (for other entities)
-        TextureGenerator.generateHeroTextures(this); 
+        TextureGenerator.generateHeroTextures(this);
         TextureGenerator.generateSlimeTextures(this);
         TextureGenerator.generateObstacleTextures(this);
         TextureGenerator.generateXPTexture(this);
@@ -55,7 +58,7 @@ export class GameScene extends Phaser.Scene {
         // 2. Set world bounds and background
         const worldSize = 2000;
         this.physics.world.setBounds(0, 0, worldSize, worldSize);
-        
+
         // Grass background
         const bg = this.add.graphics();
         bg.fillStyle(0x27ae60, 1);
@@ -73,7 +76,9 @@ export class GameScene extends Phaser.Scene {
             const y = Phaser.Math.Between(100, worldSize - 100);
             const type = Math.random() > 0.5 ? 'rock' : 'bush';
             const obstacle = new SpriteStack(this, x, y, type, 12);
+            this.physics.add.existing(obstacle, true); // Enable static physics body
             this.obstacles.add(obstacle as any);
+            
             // Setup static body
             const body = (obstacle as any).body as Phaser.Physics.Arcade.StaticBody;
             body.setCircle(12, -12, -12);
@@ -105,7 +110,7 @@ export class GameScene extends Phaser.Scene {
             const collider = this.player.meleeCollider;
             const slime = e as Slime;
             const sword = this.player.sword;
-            
+
             if (collider.isColliderActive() && !collider.getHitEnemies().has(slime)) {
                 const damage = sword.calculateDamage(this.player.stats);
                 slime.takeDamage(damage);
@@ -141,10 +146,10 @@ export class GameScene extends Phaser.Scene {
     defeatEnemy(slime: Slime) {
         new XPParticle(this, slime.x, slime.y);
         slime.destroy();
-        
+
         // Respawn after a delay
         this.time.delayedCall(3000, () => {
-             this.spawnSlime();
+            this.spawnSlime();
         });
     }
 
