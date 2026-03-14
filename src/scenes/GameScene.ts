@@ -15,12 +15,19 @@ export class GameScene extends Phaser.Scene {
     }
 
     preload() {
-        // Textures are generated in create() using TextureGenerator
+        // Load pre-processed high-quality hero textures (background already removed)
+        this.load.image('hero_layer_0', 'assets/hero/Hero_00_Boots.png');
+        this.load.image('hero_layer_1', 'assets/hero/Hero_01_Waist.png');
+        this.load.image('hero_layer_2', 'assets/hero/Hero_02_Lower_Body.png');
+        this.load.image('hero_layer_3', 'assets/hero/Hero_03_Upper_Body.png');
+        this.load.image('hero_layer_4', 'assets/hero/Hero_04_Neck.png');
+        this.load.image('hero_layer_5', 'assets/hero/Hero_05_Lower_Head.png');
+        this.load.image('hero_layer_6', 'assets/hero/Hero_05_Upper_Head.png');
     }
 
     create() {
-        // 1. Generate procedural textures
-        TextureGenerator.generateHeroTextures(this);
+        // 1. Generate procedural textures (for other entities)
+        TextureGenerator.generateHeroTextures(this); 
         TextureGenerator.generateSlimeTextures(this);
         TextureGenerator.generateObstacleTextures(this);
         TextureGenerator.generateXPTexture(this);
@@ -54,6 +61,7 @@ export class GameScene extends Phaser.Scene {
 
         // 4. Create Player
         this.player = new Hero(this, worldSize / 2, worldSize / 2);
+        this.sys.updateList.add(this.player); // Register for preUpdate
         this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
         this.cameras.main.setBounds(0, 0, worldSize, worldSize);
 

@@ -11,9 +11,11 @@
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
 
 ## Features
-- **Pseudo-3D Sprite Stacking**: Characters and environment objects are built from 12 vertically stacked 2D layers (drawn via code), creating a 3D illusion with depth and parallax.
-- **Dynamic Character Controller**: Uses WASD for movement with procedural tilting and rotation in the direction of travel.
-- **Procedural Graphics**: Textures for the Hero, Slimes, and obstacles (Rocks, Bushes) are generated at runtime using HTML Canvas.
+- **Pseudo-3D Sprite Stacking**: Characters and environment objects are built from vertically stacked 2D layers, creating a 3D illusion with depth and parallax.
+- **Dynamic Character Controller**: Uses WASD for movement with procedural tilting and rotation in the direction of travel (refactored into components).
+- **High-Quality Character Assets**: New high-resolution hero assets processed via `rembg` for perfect transparency and scaling.
+- **Improved Architecture**: Refactored `Hero` class using a component-based system (`HeroStats`, `HeroGraphics`, `HeroController`).
+- **Asset Processing Utility**: Python script using `uv` and `rembg` for automated background removal and resizing of sprite layers.
 - **Simple Combat**: Tactical sword swinging (Spacebar) to defeat enemies.
 - **AI Enemies**: Slimes move towards the player and drop XP particles upon defeat.
 - **Optimized Physics**: Circle-based collision detection using Phaser's Arcade Physics.
@@ -44,10 +46,12 @@
 - **Spacebar**: Attack (Sword Swing)
 
 ## Project Architecture
-- `src/entities/`: Main game logic for `Hero`, `Slime`, and the base `SpriteStack` class.
+- `src/entities/hero/`: Modular components for the Hero (`HeroStats.ts`, `HeroGraphics.ts`, `HeroController.ts`).
+- `src/entities/`: Main game logic for `Hero.ts` (composition root), `Slime.ts`, and the base `SpriteStack.ts` class.
 - `src/graphics/`: `TextureGenerator.ts` for procedural Canvas drawing.
 - `src/scenes/`: `GameScene.ts` handles the world, camera, and game loop.
-- `src/main.ts`: Phaser game initialization and configuration.
+- `utilities/`: Python scripts for asset processing.
+- `public/assets/hero/`: Pre-processed hero sprite layers.
 
 ---
 *Created as part of an Isekai Game Development project.*
