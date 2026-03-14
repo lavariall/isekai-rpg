@@ -1,5 +1,7 @@
 # Slime Hunter - Isekai Pseudo-3D RPG
 
+**Play Slime Hunter live at: [https://lavariall.github.io/isekai-rpg/](https://lavariall.github.io/isekai-rpg/)**
+
 ## Overview
 **Slime Hunter** is a playable prototype of a top-down RPG featuring a unique "Pseudo-3D" aesthetic achieved through **Sprite Stacking**. You play as an Isekai hero armed with a sword, exploring a procedural grassland populated by slimes.
 
@@ -49,5 +51,3 @@
 
 ---
 *Created as part of an Isekai Game Development project.*
-
-**Play Slime Hunter live at: [https://lavariall.github.io/isekai-rpg/](https://lavariall.github.io/isekai-rpg/)**
