@@ -5,15 +5,25 @@ import { Slime } from '../entities/Slime';
 import { SpriteStack } from '../entities/SpriteStack';
 import { XPParticle } from '../entities/XPParticle';
 
+/**
+ * The main game scene where the action takes place.
+ * Handles entity spawning, collisions, and gameplay logic.
+ */
 export class GameScene extends Phaser.Scene {
     private player!: Hero;
     private enemies!: Phaser.Physics.Arcade.Group;
     private obstacles!: Phaser.Physics.Arcade.StaticGroup;
 
+    /**
+     * Creates an instance of the GameScene.
+     */
     constructor() {
         super('GameScene');
     }
 
+    /**
+     * Preloads all necessary assets for the game scene.
+     */
     preload() {
         // Load pre-processed high-quality hero textures (background already removed)
         this.load.image('hero_layer_0', 'assets/hero/Hero_00_Boots.png');
@@ -23,11 +33,16 @@ export class GameScene extends Phaser.Scene {
         this.load.image('hero_layer_4', 'assets/hero/Hero_04_Neck.png');
         this.load.image('hero_layer_5', 'assets/hero/Hero_05_Lower_Head.png');
         this.load.image('hero_layer_6', 'assets/hero/Hero_05_Upper_Head.png');
+        this.load.image('sword', 'assets/hero/Sword.png');
         
         // Load pre-processed high-quality slime texture
+
         this.load.image('slime_layer_0', 'assets/slime/Slime_00.png');
     }
 
+    /**
+     * Initializes the game world, entities, and physics.
+     */
     create() {
         // 1. Generate procedural textures (for other entities)
         TextureGenerator.generateHeroTextures(this); 
@@ -84,13 +99,17 @@ export class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.enemies, this.enemies);
 
         // Combat Overlap (Sword swing)
-        this.physics.add.overlap(this.player, this.enemies, (_p, e) => {
+        this.physics.add.overlap(this.player.sword, this.enemies, (_s, e) => {
             if (this.player.isSwinging()) {
                 this.defeatEnemy(e as Slime);
             }
         });
+
     }
 
+    /**
+     * Spawns a new slime enemy at a random location on the map.
+     */
     spawnSlime(): void {
         const x = Phaser.Math.Between(100, 1900);
         const y = Phaser.Math.Between(100, 1900);
@@ -103,6 +122,10 @@ export class GameScene extends Phaser.Scene {
         this.enemies.add(slime);
     }
 
+    /**
+     * Handles the defeat of an enemy, spawning particles and removing the enemy.
+     * @param {Slime} slime The slime enemy that was defeated.
+     */
     defeatEnemy(slime: Slime) {
         new XPParticle(this, slime.x, slime.y);
         slime.destroy();
@@ -113,6 +136,9 @@ export class GameScene extends Phaser.Scene {
         });
     }
 
+    /**
+     * Standard Phaser update loop.
+     */
     update() {
         // Player preUpdate is called by Phaser because it's a GameObject added to scene
     }

@@ -1,11 +1,21 @@
 import Phaser from 'phaser';
 import { SpriteStack } from './SpriteStack';
 
+/**
+ * A basic slime enemy that follows a target.
+ * Inherits from SpriteStack for a pseudo-3D effect.
+ */
 export class Slime extends SpriteStack {
     private bodyProxy: Phaser.Physics.Arcade.Body;
     private target: Phaser.GameObjects.Components.Transform | null = null;
     private speed: number = 50;
 
+    /**
+     * Creates an instance of a Slime enemy.
+     * @param {Phaser.Scene} scene The Phaser scene this slime belongs to.
+     * @param {number} x The initial x-coordinate.
+     * @param {number} y The initial y-coordinate.
+     */
     constructor(scene: Phaser.Scene, x: number, y: number) {
         // Use the new high-quality slime texture
         // For now, we use 1 layer as we only have one high-res Slime_00 asset
@@ -20,10 +30,19 @@ export class Slime extends SpriteStack {
         this.layers.forEach(layer => layer.setScale(1.0));
     }
 
+    /**
+     * Sets the target that the slime will move towards.
+     * @param {Phaser.GameObjects.Components.Transform} target The transform-capable object to target.
+     */
     setTarget(target: Phaser.GameObjects.Components.Transform) {
         this.target = target;
     }
 
+    /**
+     * Internal Phaser update loop for the slime.
+     * @param {number} time The current time.
+     * @param {number} delta The delta time since the last frame.
+     */
     preUpdate(time: number, delta: number) {
         super.preUpdate(time, delta);
 

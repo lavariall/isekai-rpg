@@ -1,3 +1,7 @@
+/**
+ * Sets up a simple counter on a button element.
+ * @param {HTMLButtonElement} element The HTML button element to attach the counter to.
+ */
 export function setupCounter(element: HTMLButtonElement) {
   let counter = 0
   const setCounter = (count: number) => {
