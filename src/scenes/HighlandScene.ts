@@ -3,6 +3,7 @@ import { HeroSpawner } from '../spawners/HeroSpawner';
 import { SlimeSpawner } from '../spawners/SlimeSpawner';
 import { Hero } from '../entities/EntityHero/Hero';
 import { Slime } from '../entities/EntitySlime/Slime';
+import { AnimationManager } from '../managers/AnimationManager';
 
 /**
  * Main game scene in a grassland area with seasonal variation.
@@ -23,11 +24,13 @@ export class HighlandScene extends Phaser.Scene {
     }
 
     preload() {
-        // Hero assets
-        for (let i = 0; i < 20; i++) {
-            const frameNum = i.toString().padStart(3, '0');
-            this.load.image(`hero_idle_${i}`, `assets/entities/hero/Hero_idle_animation/frame_${frameNum}.png`);
-        }
+        // Hero animations
+        AnimationManager.preloadAnimation(this, {
+            key: 'hero_idle',
+            folderPath: 'assets/entities/hero/Hero_idle_animation',
+            frameCount: 20
+        });
+
         this.load.image('sword', 'assets/entities/hero/Sword.png');
 
         // Slime assets
@@ -39,6 +42,14 @@ export class HighlandScene extends Phaser.Scene {
     }
 
     create() {
+        // Create Hero animations
+        AnimationManager.createAnimation(this, {
+            key: 'hero_idle',
+            folderPath: 'assets/entities/hero/Hero_idle_animation',
+            frameCount: 20,
+            frameRate: 15
+        });
+
         const worldSize = 2000;
         this.physics.world.setBounds(0, 0, worldSize, worldSize);
 

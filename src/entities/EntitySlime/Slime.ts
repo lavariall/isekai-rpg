@@ -3,6 +3,7 @@ import { SlimeStatus } from './SlimeStatus';
 import { SlimeNpcLogic } from './SlimeNpcLogic';
 import { SlimeMeleeWeaponCollider } from './SlimeMeleeWeaponCollider';
 import { SlimeMagicWeaponCollider } from './SlimeMagicWeaponCollider';
+import { EntityAnimationController } from '../common/EntityAnimationController';
 
 /**
  * The Slime entity, assembling status, AI, and interaction logic.
@@ -12,6 +13,7 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
     private ai: SlimeNpcLogic;
     public meleeCollider: SlimeMeleeWeaponCollider;
     public magicCollider: SlimeMagicWeaponCollider;
+    protected animController: EntityAnimationController;
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, 'slime_layer_0');
@@ -28,6 +30,10 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
 
         this.meleeCollider.setActive(false).setVisible(false);
         this.magicCollider.setActive(false).setVisible(false);
+
+        this.animController = new EntityAnimationController(this);
+        // Slime currently has no multi-frame animation, but controller is ready.
+        // this.animController.play('slime_idle'); 
     }
 
     public setTarget(target: Phaser.GameObjects.Components.Transform): void {

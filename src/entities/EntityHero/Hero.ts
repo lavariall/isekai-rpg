@@ -3,6 +3,7 @@ import { HeroStatus } from './HeroStatus';
 import { HeroController } from './HeroController';
 import { HeroMeleeWeaponCollider } from './HeroMeleeWeaponCollider';
 import { HeroMagicWeaponCollider } from './HeroMagicWeaponCollider';
+import { EntityAnimationController } from '../common/EntityAnimationController';
 
 /**
  * The Hero entity, assembling status, controller, and interaction logic.
@@ -12,6 +13,7 @@ export class Hero extends Phaser.Physics.Arcade.Sprite {
     private controller: HeroController;
     public meleeCollider: HeroMeleeWeaponCollider;
     public magicCollider: HeroMagicWeaponCollider;
+    private animController: EntityAnimationController;
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, 'hero_idle_0');
@@ -29,6 +31,9 @@ export class Hero extends Phaser.Physics.Arcade.Sprite {
         // Hide colliders initially
         this.meleeCollider.setActive(false).setVisible(false);
         this.magicCollider.setActive(false).setVisible(false);
+
+        this.animController = new EntityAnimationController(this);
+        this.animController.play('hero_idle');
 
         // Right-click for Melee Attack
         scene.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
