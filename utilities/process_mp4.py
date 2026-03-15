@@ -49,14 +49,16 @@ def extract_frames(video_path, output_folder, frame_interval=10):
     print(f"Finished! {saved_count} frames saved to '{output_folder}'.")
 
 if __name__ == "__main__":
-    # Input video path
+    # Example: Input video path
+    # Change this to the video you want to process
     input_video = r".concept\mp4\Hero_looks_up_runs_down_looks_down.mp4"
     
-    # Derive output folder from filename
+    # Derive output folder from video path (same directory, folder with video name)
+    video_dir = os.path.dirname(input_video)
     video_filename = os.path.basename(input_video)
     name_without_ext = os.path.splitext(video_filename)[0]
     
-    # Target directory in assets
-    output_dir = os.path.join(r"public\assets\hero", name_without_ext)
+    # Target directory is now a sub-folder in the same directory as the video
+    output_dir = os.path.join(video_dir, name_without_ext)
     
     extract_frames(input_video, output_dir)

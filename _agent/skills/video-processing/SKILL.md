@@ -12,7 +12,7 @@ This skill documents the workflow for converting video footage into sequential i
 1.  **Stage Raw Video**: Place `.mp4` files into the `.concept/mp4/` directory.
 2.  **Configure extraction**: Update `utilities/process_mp4.py` with:
     -   **Input Path**: Path to the source video.
-    -   **Output Directory**: Path to the target animation folder in `public/assets/`.
+    -   **Output Directory**: By default, frames are saved in a sub-folder with the same name as the video file (e.g., `.concept/mp4/<filename>/`).
     -   **Frame Interval**: The `frame_interval` parameter (default 10) determines how many frames to skip.
 3.  **Execute Utility**: Run the script using `uv`:
     ```powershell
