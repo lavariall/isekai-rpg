@@ -24,7 +24,11 @@ This skill documents the mandatory verification steps required before submitting
 4.  **Documentation Update**: Update the project's internal tracking and evidence.
     -   **task.md**: Mark all relevant tasks as `[x]`.
     -   **walkthrough.md**: Create or update the walkthrough with results and media evidence.
-5.  **Commit & Push**: Ensure all changes (including new assets) are staged and pushed to the remote branch.
+5.  **Stop Localhost Server**: Ensure the development server is shut down to free up system resources.
+    ```powershell
+    npm run stop
+    ```
+6.  **Commit & Push**: Ensure all changes (including new assets) are staged and pushed to the remote branch.
 
 ## Standards
 
