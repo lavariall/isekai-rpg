@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
-import { GameScene } from './scenes/GameScene';
-import { StartScreen } from './scenes/StartScreen';
+import { StartScene } from './scenes/StartScene';
+import { HighlandScene } from './scenes/HighlandScene';
 
 const config: Phaser.Types.Core.GameConfig = {
     type: Phaser.AUTO,
@@ -11,10 +11,10 @@ const config: Phaser.Types.Core.GameConfig = {
         default: 'arcade',
         arcade: {
             gravity: { x: 0, y: 0 },
-            debug: false
+            debug: true
         }
     },
-    scene: [StartScreen, GameScene]
+    scene: [StartScene, HighlandScene]
 };
 
 new Phaser.Game(config);
