@@ -4,6 +4,8 @@ import { SlimeSpawner } from '../spawners/SlimeSpawner';
 import { Hero } from '../entities/EntityHero/Hero';
 import { Slime } from '../entities/EntitySlime/Slime';
 import { AnimationManager } from '../managers/AnimationManager';
+import { MapManager } from '../managers/MapManager';
+import { GameStateManager } from '../managers/GameStateManager';
 
 /**
  * Main game scene in a grassland area with seasonal variation.
@@ -11,7 +13,9 @@ import { AnimationManager } from '../managers/AnimationManager';
 export class HighlandScene extends Phaser.Scene {
     private hero!: Hero;
     private enemies!: Phaser.Physics.Arcade.Group;
+    private worldObjects!: Phaser.GameObjects.Group;
     private season: string = 'spring';
+    private gameState = GameStateManager.getInstance();
 
     constructor() {
         super('HighlandScene');
@@ -37,11 +41,18 @@ export class HighlandScene extends Phaser.Scene {
         this.load.image('slime_layer_0', 'assets/entities/slime/Slime_00.png');
 
         // Seasonal World assets
-        this.load.image('rock', `assets/world/${this.season}/Rock.png`);
-        this.load.image('bush', `assets/world/${this.season}/Bush.png`);
+        const assets = ['Rock', 'Bush', 'Tree', 'Water', 'Sea'];
+        assets.forEach(asset => {
+            this.load.image(asset.toLowerCase(), `assets/world/${this.season}/${asset}.png`);
+        });
+        
+        const foliage = this.season === 'winter' ? 'Snow' : 'Grass';
+        this.load.image('foliage', `assets/world/${this.season}/${foliage}.png`);
     }
 
     create() {
+        this.gameState.startSession();
+
         // Create Hero animations
         AnimationManager.createAnimation(this, {
             key: 'hero_idle',
@@ -50,13 +61,28 @@ export class HighlandScene extends Phaser.Scene {
             frameRate: 15
         });
 
-        const worldSize = 2000;
-        this.physics.world.setBounds(0, 0, worldSize, worldSize);
+        const worldWidth = 2000;
+        const worldHeight = 1500;
+        const horizonY = 300; // Horizon line Y position
+
+        this.physics.world.setBounds(0, horizonY, worldWidth, worldHeight - horizonY);
 
         // Allow right-click for combat
         this.input.mouse?.disableContextMenu();
 
-        // Pseudo 3D Background (Color based on season)
+        // Sky and Horizon
+        const skyGfx = this.add.graphics();
+        skyGfx.setScrollFactor(0);
+        
+        // Sky Gradient (Top to Horizon)
+        const skyColorStart = 0x87ceeb; // Sky blue
+        const skyColorEnd = 0xffffff;   // Horizon white
+        
+        // Draw sky
+        skyGfx.fillGradientStyle(skyColorStart, skyColorStart, skyColorEnd, skyColorEnd, 1);
+        skyGfx.fillRect(0, 0, this.scale.width, horizonY);
+
+        // Draw ground (Color based on season)
         const bgColors: { [key: string]: number } = {
             spring: 0x27ae60,
             summer: 0x2ecc71,
@@ -64,14 +90,17 @@ export class HighlandScene extends Phaser.Scene {
             winter: 0xbdc3c7
         };
         
-        const graphics = this.add.graphics();
-        graphics.fillStyle(bgColors[this.season], 1);
-        graphics.fillRect(0, 0, worldSize, worldSize);
+        const groundGfx = this.add.graphics();
+        groundGfx.fillStyle(bgColors[this.season], 1);
+        groundGfx.fillRect(0, horizonY, worldWidth, worldHeight - horizonY);
 
-        // Spawn Hero
-        this.hero = HeroSpawner.spawn(this, worldSize / 2, worldSize / 2);
+        // Load Fixed Map
+        this.worldObjects = MapManager.loadMap(this);
+
+        // Spawn Hero at a safe starting point
+        this.hero = HeroSpawner.spawn(this, worldWidth / 2, worldHeight / 2 + 200);
         this.cameras.main.startFollow(this.hero, true, 0.1, 0.1);
-        this.cameras.main.setBounds(0, 0, worldSize, worldSize);
+        this.cameras.main.setBounds(0, 0, worldWidth, worldHeight);
 
         // Spawn Enemies
         this.enemies = this.physics.add.group({
@@ -79,20 +108,34 @@ export class HighlandScene extends Phaser.Scene {
             runChildUpdate: true
         });
 
-        for (let i = 0; i < 10; i++) {
-            const slime = SlimeSpawner.spawnRandom(this, worldSize, worldSize, this.hero.x, this.hero.y);
+        for (let i = 0; i < 15; i++) {
+            const x = Phaser.Math.Between(100, worldWidth - 100);
+            const y = Phaser.Math.Between(horizonY + 100, worldHeight - 100);
+            const slime = SlimeSpawner.spawn(this, x, y);
             slime.setTarget(this.hero);
             this.enemies.add(slime);
         }
 
-        // Setup Interactions
+        // Setup Collisions
+        this.physics.add.collider(this.hero, this.worldObjects);
+        this.physics.add.collider(this.enemies, this.worldObjects);
+
+        // Combat Interactions
         this.physics.add.overlap(this.hero.meleeCollider, this.enemies, (_h, e) => {
             const slime = e as Slime;
             this.hero.meleeCollider.onImpact(slime.status);
             
             if (slime.status.health <= 0) {
+                this.gameState.incrementScore();
                 slime.destroy();
-                // Logic for respawn or XP could go here
+                // Respawn logic
+                this.time.delayedCall(3000, () => {
+                    const x = Phaser.Math.Between(100, worldWidth - 100);
+                    const y = Phaser.Math.Between(horizonY + 100, worldHeight - 100);
+                    const newSlime = SlimeSpawner.spawn(this, x, y);
+                    newSlime.setTarget(this.hero);
+                    this.enemies.add(newSlime);
+                });
             }
         });
 
@@ -106,14 +149,52 @@ export class HighlandScene extends Phaser.Scene {
         this.input.keyboard?.on('keydown-F', () => {
             this.hero.attackMelee();
         });
+
+        // Simple HUD
+        this.createHUD();
+    }
+
+    private hudText!: Phaser.GameObjects.Text;
+
+    private createHUD() {
+        this.hudText = this.add.text(20, 20, 'Slimes Hunted: 0', {
+            fontSize: '24px',
+            color: '#ffffff',
+            stroke: '#000000',
+            strokeThickness: 4
+        }).setScrollFactor(0).setDepth(10000);
     }
 
     update() {
-        // Pseudo-3D Z-Sorting
+        // Pseudo-3D Z-Sorting and Perspective Scaling
+        const horizonY = 300;
+        const maxScale = 1.0;
+        const minScale = 0.4;
+
         this.children.each((child: any) => {
-            if (child.y) {
+            // Only apply perspective and depth to world objects (scrollFactor == 1)
+            if (child.y && child.setDepth && child.scrollFactorX !== 0) {
                 child.setDepth(child.y);
+
+                // Perspective Scaling based on Y position relative to horizon
+                if (child.y > horizonY) {
+                    const factor = (child.y - horizonY) / (this.physics.world.bounds.height);
+                    const scale = minScale + (maxScale - minScale) * Phaser.Math.Clamp(factor, 0, 1);
+                    
+                    // Don't scale ground or UI
+                    if (child.type !== 'Graphics') {
+                        child.setScale(scale);
+                    }
+                }
+            } else if (child.scrollFactorX === 0 && child.setDepth) {
+                // Ensure HUD stays on top
+                child.setDepth(10000);
             }
         });
+
+        // Update HUD
+        if (this.hudText) {
+            this.hudText.setText(`Slimes Hunted: ${this.gameState.getScore()}\nTime: ${this.gameState.getElapsedTime()}s`);
+        }
     }
 }

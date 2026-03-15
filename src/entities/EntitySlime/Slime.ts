@@ -21,6 +21,9 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
         (this.body as Phaser.Physics.Arcade.Body).setCircle(15, 0, 0);
+        
+        // Random slight scale variation for slimes
+        this.setScale(0.8 + Math.random() * 0.4);
 
         this.status = new SlimeStatus();
         this.ai = new SlimeNpcLogic(scene, this.body as Phaser.Physics.Arcade.Body);
