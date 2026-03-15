@@ -37,11 +37,14 @@ export class StartScene extends Phaser.Scene {
             align: 'center'
         };
 
-        this.add.text(width / 2, height - 100, 'Press Space to start', hintStyle).setOrigin(0.5);
+        this.add.text(width / 2, height - 100, 'Press Space or Click to start', hintStyle).setOrigin(0.5);
 
         // Input
-        this.input.keyboard?.once('keydown-SPACE', () => {
+        const startAction = () => {
             SceneStateManager.getInstance().transitionTo(this, 'HighlandScene');
-        });
+        };
+
+        this.input.keyboard?.once('keydown-SPACE', startAction);
+        this.input.once('pointerdown', startAction);
     }
 }

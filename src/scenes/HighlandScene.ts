@@ -17,7 +17,7 @@ export class HighlandScene extends Phaser.Scene {
     }
 
     init() {
-        const seasons = ['spring', 'summer', 'autumn', 'winter'];
+        const seasons = ['spring', 'summer', 'winter']; // Autumn missing in assets
         this.season = seasons[Phaser.Math.Between(0, seasons.length - 1)];
         console.log(`Setting season to: ${this.season}`);
     }
@@ -33,16 +33,17 @@ export class HighlandScene extends Phaser.Scene {
         // Slime assets
         this.load.image('slime_layer_0', 'assets/entities/slime/Slime_00.png');
 
-        // Seasonal World assets (Rocks/Bushes would ideally be prefixed, 
-        // but for now we use generic ones from the search results)
-        this.load.image('rock_0', 'assets/world/Rock_00.png');
-        this.load.image('rock_1', 'assets/world/Rock_01.png');
-        this.load.image('rock_2', 'assets/world/Rock_02.png');
+        // Seasonal World assets
+        this.load.image('rock', `assets/world/${this.season}/Rock.png`);
+        this.load.image('bush', `assets/world/${this.season}/Bush.png`);
     }
 
     create() {
         const worldSize = 2000;
         this.physics.world.setBounds(0, 0, worldSize, worldSize);
+
+        // Allow right-click for combat
+        this.input.mouse?.disableContextMenu();
 
         // Pseudo 3D Background (Color based on season)
         const bgColors: { [key: string]: number } = {

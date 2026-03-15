@@ -29,6 +29,13 @@ export class Hero extends Phaser.Physics.Arcade.Sprite {
         // Hide colliders initially
         this.meleeCollider.setActive(false).setVisible(false);
         this.magicCollider.setActive(false).setVisible(false);
+
+        // Right-click for Melee Attack
+        scene.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+            if (pointer.rightButtonDown()) {
+                this.attackMelee();
+            }
+        });
     }
 
     /**
