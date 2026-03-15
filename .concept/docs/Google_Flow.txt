@@ -1,0 +1,22 @@
+Setup:
+A video game animation of the hero character.
+
+
+Camera View:
+- Bird's-eye view
+- Character always in focus
+- White space around the Hero Character
+
+
+Action:
+1. Hero starts accellerating in upwards direction.
+2. Hero runs upwards.
+3. Hero stops running and stands looking in upwards direction away from the camera.
+
+
+Constraints:
+- Background shall be white.
+- No additional Items are displayed.
+- The Camera always fokus the Hero.
+
+
