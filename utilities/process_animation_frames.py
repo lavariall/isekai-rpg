@@ -23,7 +23,7 @@ def process_animation_frames(source_base_dir, target_base_dir, target_size=(256,
         
         # Target folder is public/assets/hero/<folder_name>
         # (Assuming hero for now based on user request)
-        target_folder = os.path.join(target_base_dir, "hero", folder_name)
+        target_folder = os.path.join(target_base_dir, "entities", "hero", folder_name)
         if not os.path.exists(target_folder):
             os.makedirs(target_folder, exist_ok=True)
             print(f"Created target directory: {target_folder}")

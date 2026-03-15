@@ -51,7 +51,7 @@ def extract_frames(video_path, output_folder, frame_interval=10):
 if __name__ == "__main__":
     # Example: Input video path
     # Change this to the video you want to process
-    input_video = r".concept\mp4\Hero_looks_up_runs_down_looks_down.mp4"
+    input_video = r".concept\mp4\Hero_idle_animation.mp4"
     
     # Derive output folder from video path (same directory, folder with video name)
     video_dir = os.path.dirname(input_video)
