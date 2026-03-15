@@ -20,3 +20,37 @@ Constraints:
 - The Camera always fokus the Hero.
 
 
+##################################
+
+Setup:
+A video game animation of the hero character.
+
+
+
+
+Camera View:
+- Bird's-eye view (Camera keeps a fixed distance to the Hero character)
+- Character always in focus
+- White space around the Hero Character
+
+
+
+
+Action:
+1. Hero starts accellerating in downwards direction (looking towards the viewer).
+2. Hero runs towards the viewer.
+3. Hero stops running and stands looking relaxed downwards.
+
+
+
+
+Constraints:
+- Background shall be white.
+- No additional Items are displayed.
+- The Camera always fokus the Hero.
+
+
+
+
+
+
