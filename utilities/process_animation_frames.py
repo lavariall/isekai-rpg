@@ -2,7 +2,7 @@ import os
 from rembg import remove
 from PIL import Image
 
-def process_animation_frames(source_base_dir, target_base_dir, target_size=(64, 64)):
+def process_animation_frames(source_base_dir, target_base_dir, target_size=(256, 256)):
     """
     Iterates through subdirectories in source_base_dir, processes PNG frames,
     and saves them to target_base_dir.
