@@ -30,6 +30,16 @@ To reduce memory usage and asset count, the utility supports a `frame_interval`.
 ### Naming Convention
 Extracted frames are saved as `frame_000.png`, `frame_001.png`, etc., regardless of the interval used, ensuring compatible loading sequence in game engines like Phaser.
 
+## Processing Animation Frames
+After extraction, use the animation processing utility to remove backgrounds and resize frames for the game engine.
+
+1.  **Stage Extract**: Ensure frames are in `.concept/mp4/<folder_name>/`.
+2.  **Execute Utility**: Run `process_animation_frames.py` using `uv`:
+    ```powershell
+    uv run python utilities\process_animation_frames.py
+    ```
+3.  **Verification**: Confirm processed frames are in `public/assets/hero/<folder_name>/`.
+
 ## Dependencies
 Requires `opencv-python`. Ensure it is installed in the project environment:
 ```powershell
