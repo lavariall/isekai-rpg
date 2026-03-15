@@ -26,16 +26,16 @@ export class GameScene extends Phaser.Scene {
      */
     preload() {
         // Load pre-processed high-quality hero textures (background already removed)
-        this.load.image('hero_layer_0', 'assets/hero/Hero_00_Boots.png');
-        this.load.image('hero_layer_1', 'assets/hero/Hero_01_Waist.png');
-        this.load.image('hero_layer_2', 'assets/hero/Hero_02_Lower_Body.png');
-        this.load.image('hero_layer_3', 'assets/hero/Hero_03_Upper_Body.png');
-        this.load.image('hero_layer_4', 'assets/hero/Hero_04_Neck.png');
-        this.load.image('hero_layer_5', 'assets/hero/Hero_05_Lower_Head.png');
-        this.load.image('hero_layer_6', 'assets/hero/Hero_05_Upper_Head.png');
-        this.load.image('sword', 'assets/hero/Sword.png');
+        this.load.image('hero_layer_0', 'assets/entities/hero/Hero_00_Boots.png');
+        this.load.image('hero_layer_1', 'assets/entities/hero/Hero_01_Waist.png');
+        this.load.image('hero_layer_2', 'assets/entities/hero/Hero_02_Lower_Body.png');
+        this.load.image('hero_layer_3', 'assets/entities/hero/Hero_03_Upper_Body.png');
+        this.load.image('hero_layer_4', 'assets/entities/hero/Hero_04_Neck.png');
+        this.load.image('hero_layer_5', 'assets/entities/hero/Hero_05_Lower_Head.png');
+        this.load.image('hero_layer_6', 'assets/entities/hero/Hero_05_Upper_Head.png');
+        this.load.image('sword', 'assets/entities/hero/Sword.png');
 
-        this.load.image('slime_layer_0', 'assets/slime/Slime_00.png');
+        this.load.image('slime_layer_0', 'assets/entities/slime/Slime_00.png');
 
         // Load new Rock assets
         this.load.image('rock_v0_0', 'assets/world/Rock_00.png');
