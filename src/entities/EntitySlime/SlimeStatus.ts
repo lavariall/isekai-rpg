@@ -9,6 +9,9 @@ export class SlimeStatus implements IDamageable {
     public attackDamage: number;
     public moveSpeed: number;
 
+    /**
+     * Initializes the SlimeStatus.
+     */
     constructor() {
         this.maxHealth = 50;
         this.health = 50;

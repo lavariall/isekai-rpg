@@ -1,15 +1,27 @@
 import Phaser from 'phaser';
 import { SceneStateManager } from './SceneStateManager';
 
+/**
+ * The initial entry screen for the game.
+ */
 export class StartScene extends Phaser.Scene {
+    /**
+     * Initializes the StartScene.
+     */
     constructor() {
         super('StartScene');
     }
 
+    /**
+     * Preloads assets for the start screen.
+     */
     preload(): void {
         this.load.image('start_bg', 'assets/backgrounds/Background_Start_Screen_concept_art.png');
     }
 
+    /**
+     * Sets up the start screen UI and input listeners.
+     */
     create(): void {
         const { width, height } = this.scale;
 

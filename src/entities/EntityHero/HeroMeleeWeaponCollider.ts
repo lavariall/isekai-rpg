@@ -7,6 +7,10 @@ import type { IDamageable } from '../common/IDamageable';
 export class HeroMeleeWeaponCollider extends EntityCollider {
     private damage: number = 0;
 
+    /**
+     * Initializes the HeroMeleeWeaponCollider.
+     * @param scene The parent scene.
+     */
     constructor(scene: Phaser.Scene) {
         super(scene, 0, 0, 80, 80);
     }

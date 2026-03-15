@@ -15,6 +15,12 @@ export class Hero extends Phaser.Physics.Arcade.Sprite {
     public magicCollider: HeroMagicWeaponCollider;
     private animController: EntityAnimationController;
 
+    /**
+     * Initializes the Hero entity.
+     * @param scene The parent scene.
+     * @param x X world coordinate.
+     * @param y Y world coordinate.
+     */
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, 'hero_idle_0');
         

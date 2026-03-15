@@ -8,6 +8,11 @@ export class SlimeNpcLogic {
     private targetBody: Phaser.Physics.Arcade.Body;
     private targetEntity: Phaser.GameObjects.Components.Transform | null = null;
 
+    /**
+     * Initializes the SlimeNpcLogic.
+     * @param scene The parent scene.
+     * @param body The physics body to control.
+     */
     constructor(scene: Phaser.Scene, body: Phaser.Physics.Arcade.Body) {
         this.scene = scene;
         this.targetBody = body;

@@ -8,6 +8,10 @@ export class EntityAnimationController {
     private currentKey: string | null = null;
     private isLocked: boolean = false;
 
+    /**
+     * Initializes the EntityAnimationController.
+     * @param sprite The sprite to control.
+     */
     constructor(sprite: Phaser.GameObjects.Sprite) {
         this.sprite = sprite;
     }

@@ -13,6 +13,11 @@ export class HeroController {
         D: Phaser.Input.Keyboard.Key;
     };
 
+    /**
+     * Initializes the HeroController.
+     * @param _scene The parent scene.
+     * @param body The physics body to control.
+     */
     constructor(_scene: Phaser.Scene, body: Phaser.Physics.Arcade.Body) {
         this.targetBody = body;
         this.cursors = _scene.input.keyboard!.createCursorKeys();

@@ -15,6 +15,12 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
     public magicCollider: SlimeMagicWeaponCollider;
     protected animController: EntityAnimationController;
 
+    /**
+     * Initializes the Slime entity.
+     * @param scene The parent scene.
+     * @param x X world coordinate.
+     * @param y Y world coordinate.
+     */
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, 'slime_layer_0');
         
@@ -39,10 +45,17 @@ export class Slime extends Phaser.Physics.Arcade.Sprite {
         // this.animController.play('slime_idle'); 
     }
 
+    /**
+     * Sets a target for the slime to follow.
+     * @param target The target transform.
+     */
     public setTarget(target: Phaser.GameObjects.Components.Transform): void {
         this.ai.setTarget(target);
     }
 
+    /**
+     * Standard update loop for the Slime.
+     */
     preUpdate(time: number, delta: number): void {
         super.preUpdate(time, delta);
         this.ai.update(this.status.moveSpeed);

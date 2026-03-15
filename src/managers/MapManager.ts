@@ -1,9 +1,16 @@
 import Phaser from 'phaser';
 
+/**
+ * Represents an object on the game map.
+ */
 export interface IMapObject {
+    /** Type of the world object */
     type: 'tree' | 'rock' | 'bush' | 'water' | 'sea';
+    /** X position in world coordinates */
     x: number;
+    /** Y position in world coordinates */
     y: number;
+    /** Optional scale factor */
     scale?: number;
 }
 

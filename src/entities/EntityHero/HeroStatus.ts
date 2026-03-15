@@ -9,6 +9,9 @@ export class HeroStatus implements IDamageable {
     public attackDamage: number;
     public moveSpeed: number;
 
+    /**
+     * Initializes the HeroStatus.
+     */
     constructor() {
         this.maxHealth = 100;
         this.health = 100;

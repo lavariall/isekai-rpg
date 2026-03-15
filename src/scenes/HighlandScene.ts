@@ -9,6 +9,7 @@ import { GameStateManager } from '../managers/GameStateManager';
 
 /**
  * Main game scene in a grassland area with seasonal variation.
+ * Handles isometric rendering, seasonal assets, and the hunter game loop.
  */
 export class HighlandScene extends Phaser.Scene {
     private hero!: Hero;
@@ -17,46 +18,61 @@ export class HighlandScene extends Phaser.Scene {
     private season: string = 'spring';
     private gameState = GameStateManager.getInstance();
 
+    /**
+     * Initializes the HighlandScene.
+     */
     constructor() {
         super('HighlandScene');
     }
 
+    /**
+     * Scene initialization logic.
+     */
     init() {
         const seasons = ['spring', 'summer', 'winter']; // Autumn missing in assets
         this.season = seasons[Phaser.Math.Between(0, seasons.length - 1)];
         console.log(`Setting season to: ${this.season}`);
     }
 
+    /**
+     * Preloads assets required for the HighlandScene.
+     */
     preload() {
         // Hero animations
         AnimationManager.preloadAnimation(this, {
             key: 'hero_idle',
-            folderPath: 'assets/entities/hero/Hero_idle_animation',
+            folderPath: 'assets/entities/hero/hero_idle_animation',
             frameCount: 20
         });
 
-        this.load.image('sword', 'assets/entities/hero/Sword.png');
+        this.load.image('sword', 'assets/items/Sword.png');
 
         // Slime assets
-        this.load.image('slime_layer_0', 'assets/entities/slime/Slime_00.png');
+        this.load.image('slime_layer_0', 'assets/entities/slime/Slime.png');
 
         // Seasonal World assets
         const assets = ['Rock', 'Bush', 'Tree', 'Water', 'Sea'];
         assets.forEach(asset => {
-            this.load.image(asset.toLowerCase(), `assets/world/${this.season}/${asset}.png`);
+            this.load.image(asset.toLowerCase(), `assets/world_objects/${this.season}/${asset}.png`);
         });
         
         const foliage = this.season === 'winter' ? 'Snow' : 'Grass';
-        this.load.image('foliage', `assets/world/${this.season}/${foliage}.png`);
+        this.load.image('foliage', `assets/world_objects/${this.season}/${foliage}.png`);
     }
 
+    /**
+     * Creates and initializes the game objects.
+     */
+    /**
+     * Creates and initializes the game objects.
+     */
     create() {
         this.gameState.startSession();
 
         // Create Hero animations
         AnimationManager.createAnimation(this, {
             key: 'hero_idle',
-            folderPath: 'assets/entities/hero/Hero_idle_animation',
+            folderPath: 'assets/entities/hero/hero_idle_animation',
             frameCount: 20,
             frameRate: 15
         });
@@ -165,6 +181,9 @@ export class HighlandScene extends Phaser.Scene {
         }).setScrollFactor(0).setDepth(10000);
     }
 
+    /**
+     * Main update loop for depth sorting and perspective logic.
+     */
     update() {
         // Pseudo-3D Z-Sorting and Perspective Scaling
         const horizonY = 300;
