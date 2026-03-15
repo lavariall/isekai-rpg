@@ -50,7 +50,7 @@ def extract_frames(video_path, output_folder, frame_interval=10):
 
 if __name__ == "__main__":
     # Input video path
-    input_video = r".concept\mp4\Hero_looks_down_runs_up_looks_up.mp4"
+    input_video = r".concept\mp4\Hero_looks_up_runs_down_looks_down.mp4"
     
     # Derive output folder from filename
     video_filename = os.path.basename(input_video)
