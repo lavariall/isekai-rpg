@@ -78,7 +78,7 @@ export class GameScene extends Phaser.Scene {
             const obstacle = new SpriteStack(this, x, y, type, 12);
             this.physics.add.existing(obstacle, true); // Enable static physics body
             this.obstacles.add(obstacle as any);
-            
+
             // Setup static body
             const body = (obstacle as any).body as Phaser.Physics.Arcade.StaticBody;
             body.setCircle(12, -12, -12);
