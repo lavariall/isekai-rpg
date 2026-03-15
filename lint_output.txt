@@ -1,0 +1,60 @@
+
+> isekai-rpg@1.1.0 lint
+> eslint src/**/*.ts
+
+
+C:\Users\richa\AntiGravityProjects\isekai-rpg\src\entities\EntityHero\Hero.ts
+  18:16  error  Missing JSDoc comment  jsdoc/require-jsdoc
+
+C:\Users\richa\AntiGravityProjects\isekai-rpg\src\entities\EntityHero\HeroController.ts
+  16:16  error  Missing JSDoc comment  jsdoc/require-jsdoc
+
+C:\Users\richa\AntiGravityProjects\isekai-rpg\src\entities\EntityHero\HeroMagicWeaponCollider.ts
+  10:16  error  Missing JSDoc comment  jsdoc/require-jsdoc
+
+C:\Users\richa\AntiGravityProjects\isekai-rpg\src\entities\EntityHero\HeroMeleeWeaponCollider.ts
+  10:16  error  Missing JSDoc comment  jsdoc/require-jsdoc
+
+C:\Users\richa\AntiGravityProjects\isekai-rpg\src\entities\EntityHero\HeroStatus.ts
+  12:16  error  Missing JSDoc comment  jsdoc/require-jsdoc
+
+C:\Users\richa\AntiGravityProjects\isekai-rpg\src\entities\EntitySlime\Slime.ts
+  18:16  error  Missing JSDoc comment  jsdoc/require-jsdoc
+  42:21  error  Missing JSDoc comment  jsdoc/require-jsdoc
+  46:14  error  Missing JSDoc comment  jsdoc/require-jsdoc
+
+C:\Users\richa\AntiGravityProjects\isekai-rpg\src\entities\EntitySlime\SlimeMagicWeaponCollider.ts
+  10:16  error  Missing JSDoc comment  jsdoc/require-jsdoc
+  14:21  error  Missing JSDoc comment  jsdoc/require-jsdoc
+  18:20  error  Missing JSDoc comment  jsdoc/require-jsdoc
+
+C:\Users\richa\AntiGravityProjects\isekai-rpg\src\entities\EntitySlime\SlimeMeleeWeaponCollider.ts
+  10:16  error  Missing JSDoc comment  jsdoc/require-jsdoc
+  14:21  error  Missing JSDoc comment  jsdoc/require-jsdoc
+  18:20  error  Missing JSDoc comment  jsdoc/require-jsdoc
+
+C:\Users\richa\AntiGravityProjects\isekai-rpg\src\entities\EntitySlime\SlimeNpcLogic.ts
+  11:16  error  Missing JSDoc comment  jsdoc/require-jsdoc
+
+C:\Users\richa\AntiGravityProjects\isekai-rpg\src\entities\EntitySlime\SlimeStatus.ts
+  12:16  error  Missing JSDoc comment  jsdoc/require-jsdoc
+
+C:\Users\richa\AntiGravityProjects\isekai-rpg\src\entities\common\EntityAnimationController.ts
+  11:16  error  Missing JSDoc comment  jsdoc/require-jsdoc
+
+C:\Users\richa\AntiGravityProjects\isekai-rpg\src\scenes\HighlandScene.ts
+   20:16  error  Missing JSDoc comment  jsdoc/require-jsdoc
+   24:9   error  Missing JSDoc comment  jsdoc/require-jsdoc
+   30:12  error  Missing JSDoc comment  jsdoc/require-jsdoc
+   53:11  error  Missing JSDoc comment  jsdoc/require-jsdoc
+  168:11  error  Missing JSDoc comment  jsdoc/require-jsdoc
+
+C:\Users\richa\AntiGravityProjects\isekai-rpg\src\scenes\StartScene.ts
+   4:8   error  Missing JSDoc comment  jsdoc/require-jsdoc
+   5:16  error  Missing JSDoc comment  jsdoc/require-jsdoc
+   9:12  error  Missing JSDoc comment  jsdoc/require-jsdoc
+  13:11  error  Missing JSDoc comment  jsdoc/require-jsdoc
+
+??? 26 problems (26 errors, 0 warnings)
+  26 errors and 0 warnings potentially fixable with the `--fix` option.
+
