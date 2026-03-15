@@ -26,13 +26,11 @@ export class GameScene extends Phaser.Scene {
      */
     preload() {
         // Load pre-processed high-quality hero textures (background already removed)
-        this.load.image('hero_layer_0', 'assets/entities/hero/Hero_00_Boots.png');
-        this.load.image('hero_layer_1', 'assets/entities/hero/Hero_01_Waist.png');
-        this.load.image('hero_layer_2', 'assets/entities/hero/Hero_02_Lower_Body.png');
-        this.load.image('hero_layer_3', 'assets/entities/hero/Hero_03_Upper_Body.png');
-        this.load.image('hero_layer_4', 'assets/entities/hero/Hero_04_Neck.png');
-        this.load.image('hero_layer_5', 'assets/entities/hero/Hero_05_Lower_Head.png');
-        this.load.image('hero_layer_6', 'assets/entities/hero/Hero_05_Upper_Head.png');
+        // Load idle animation frames
+        for (let i = 0; i < 20; i++) {
+            const frameNum = i.toString().padStart(3, '0');
+            this.load.image(`hero_idle_${i}`, `assets/entities/hero/Hero_idle_animation/frame_${frameNum}.png`);
+        }
         this.load.image('sword', 'assets/entities/hero/Sword.png');
 
         this.load.image('slime_layer_0', 'assets/entities/slime/Slime_00.png');
@@ -47,8 +45,20 @@ export class GameScene extends Phaser.Scene {
      * Initializes the game world, entities, and physics.
      */
     create() {
+        // 0. Create Animations
+        const frames: any[] = [];
+        for (let i = 0; i < 20; i++) {
+            frames.push({ key: `hero_idle_${i}` });
+        }
+
+        this.anims.create({
+            key: 'hero_idle',
+            frames: frames,
+            frameRate: 12,
+            repeat: -1
+        });
+
         // 1. Generate procedural textures (for other entities)
-        TextureGenerator.generateHeroTextures(this);
         TextureGenerator.generateSlimeTextures(this);
         TextureGenerator.generateObstacleTextures(this);
         TextureGenerator.generateXPTexture(this);

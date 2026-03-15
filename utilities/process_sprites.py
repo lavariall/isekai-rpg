@@ -27,11 +27,11 @@ def process_sprites(input_folder, base_output_folder):
             # Determine subfolder based on prefix
             subfolder = "other"
             if filename.startswith("Hero"):
-                subfolder = "hero"
+                subfolder = os.path.join("entities", "hero")
             elif filename.startswith("Slime"):
-                subfolder = "slime"
+                subfolder = os.path.join("entities", "slime")
             elif filename == "Sword.png":
-                subfolder = "hero"
+                subfolder = os.path.join("entities", "hero")
                 
             output_folder = os.path.join(base_output_folder, subfolder)
             if not os.path.exists(output_folder):
