@@ -41,11 +41,11 @@ export class SpriteStack extends Phaser.GameObjects.Container {
         this.layers.forEach((layer, i) => {
             // Pseudo-3D stacking effect
             layer.setY(-i * this.spacing);
-            
+
             // Add tilting based on movement or manual tilt
             layer.setX(this.tiltX * i);
             layer.setY(-i * this.spacing + (this.tiltY * i));
-            
+
             const extraRot = this.layerRotations.get(i) || 0;
             layer.setAngle(this.angle + extraRot);
         });

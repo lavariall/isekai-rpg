@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint src/**/*.ts"
+    "lint": "eslint src/**/*.ts",
+    "stop": "powershell -ExecutionPolicy Bypass -File ./utilities/stop_server.ps1"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.57.0",
